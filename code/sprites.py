@@ -16,18 +16,22 @@ class Player(Sprite):
         self.direction = pygame.Vector2()
         self.collision_sprites = collision_sprites
         self.speed = 400
+        self.gravity = 50
     
     def input(self):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
-        self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
-        self.direction = self.direction.normalize() if self.direction else self.direction
+        # self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
+        # self.direction = self.direction.normalize() if self.direction else self.direction
 
 
     def move(self, dt):
         self.rect.x += self.direction.x * self.speed * dt
         self.collision('horizontal')
-        self.rect.y += self.direction.y * self.speed * dt
+
+
+        self.direction.y += self.gravity * dt
+        self.rect.y += self.direction.y
         self.collision('vertical')
 
     def collision(self, direction):
@@ -37,7 +41,9 @@ class Player(Sprite):
                     if self.direction.x > 0: self.rect.right = sprite.rect.left
                     if self.direction.x < 0: self.rect.left = sprite.rect.right
                 if direction == 'vertical':
-                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top
+                    if self.direction.y > 0: 
+                        self.rect.bottom = sprite.rect.top
+                        self.direction.y = 0
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
     def update(self, dt):
