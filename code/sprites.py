@@ -1,6 +1,7 @@
 
-from typing import Any
+from timer import Timer
 from settings import *
+
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
@@ -44,6 +45,9 @@ class Player(AnimatedSprite):
         self.speed = 400
         self.gravity = 50
         self.on_floor = False
+
+        # * timer
+        self.shoot_timer = Timer(500)
     
     def input(self):
         keys = pygame.key.get_pressed()
@@ -53,6 +57,9 @@ class Player(AnimatedSprite):
         if keys[pygame.K_SPACE] and self.on_floor:
             self.direction.y = -20
 
+        if keys[pygame.K_l] and not self.shoot_timer.active:
+            print('shoot bullet')
+            self.shoot_timer.activate()
 
     def move(self, dt):
         # * horizontal
@@ -97,6 +104,7 @@ class Player(AnimatedSprite):
         self.on_floor = True if bottom_rect.collidelist(level_rects) >= 0 else False
 
     def update(self, dt):
+        self.shoot_timer.update()
         self.check_floor()
         self.input()
         self.move(dt)
