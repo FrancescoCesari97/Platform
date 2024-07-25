@@ -17,19 +17,24 @@ class Player(Sprite):
         self.collision_sprites = collision_sprites
         self.speed = 400
         self.gravity = 50
+        self.on_floor = False
     
     def input(self):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
         # self.direction.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
         # self.direction = self.direction.normalize() if self.direction else self.direction
+        if keys[pygame.K_SPACE] and self.on_floor:
+            self.direction.y = -20
 
 
     def move(self, dt):
+        # * horizontal
         self.rect.x += self.direction.x * self.speed * dt
         self.collision('horizontal')
 
-
+        # * vertical
+        # self.on_floor = False
         self.direction.y += self.gravity * dt
         self.rect.y += self.direction.y
         self.collision('vertical')
@@ -41,11 +46,19 @@ class Player(Sprite):
                     if self.direction.x > 0: self.rect.right = sprite.rect.left
                     if self.direction.x < 0: self.rect.left = sprite.rect.right
                 if direction == 'vertical':
-                    if self.direction.y > 0: 
-                        self.rect.bottom = sprite.rect.top
-                        self.direction.y = 0
+                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top
+                        # self.on_floor = True
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
+                    self.direction.y = 0
+                    
+    
+    def check_floor(self):
+        bottom_rect = pygame.FRect((0,0), (self.rect.width, 2)).move_to(midtop = self.rect.midbottom)
+        level_rects = [sprite.rect for sprite in self.collision_sprites]
+        self.on_floor = True if bottom_rect.collidelist(level_rects) >= 0 else False
+
     def update(self, dt):
+        self.check_floor()
         self.input()
         self.move(dt)
