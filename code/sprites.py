@@ -57,7 +57,7 @@ class Player(AnimatedSprite):
         if keys[pygame.K_SPACE] and self.on_floor:
             self.direction.y = -20
 
-        if keys[pygame.K_l] and not self.shoot_timer.active:
+        if keys[pygame.K_l] and not self.shoot_timer:
             print('shoot bullet')
             self.shoot_timer.activate()
 
