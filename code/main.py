@@ -27,6 +27,10 @@ class Game:
         self.bee_frames = import_folder('images', 'enemies', 'bee')
         self.worm_frames = import_folder('images', 'enemies', 'worm')
 
+        # * sounds
+        self.audio = audio_importer('audio')
+        
+
     
     def setup(self):
         tmx_map = load_pygame(join('data', 'maps', 'world.tmx'))
