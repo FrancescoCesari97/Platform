@@ -1,4 +1,5 @@
 
+from typing import Any
 from settings import *
 
 class Sprite(pygame.sprite.Sprite):
@@ -12,7 +13,25 @@ class AnimatedSprite(Sprite):
         self.frames, self.frame_index, self.aniamtion_speed = frames, 0, 10
         super().__init__(pos, self.frames[self.frame_index], groups)
     
+    def animate(self, dt):
+        self.frame_index += self.aniamtion_speed *dt
+        self.image = self.frames[int(self.frame_index) % len(self.frames)]
 
+
+class Bee(AnimatedSprite): 
+    def __init__(self, frames, pos, groups):
+        super().__init__(frames, pos, groups)
+    
+    def update(self, dt):
+        self.animate(dt)
+
+class Worm(AnimatedSprite): 
+    def __init__(self, frames, pos, groups):
+        super().__init__(frames, pos, groups)
+    
+    def update(self, dt):
+        self.animate(dt)
+        
 
 class Player(AnimatedSprite):
     def __init__(self, pos, groups, collision_sprites, frames):
@@ -67,7 +86,7 @@ class Player(AnimatedSprite):
 
         if not self.on_floor:
             self.frame_index = 1
-            
+
         self.image = self.frames[int(self.frame_index) % len(self.frames)]
         self.image = pygame.transform.flip(self.image, self.flip, False)
 
