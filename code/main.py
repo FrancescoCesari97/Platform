@@ -1,6 +1,7 @@
 from settings import * 
 from sprites import *
 from groups import AllSprites
+from support import *
 class Game:
     def __init__(self):
         pygame.init()
@@ -14,8 +15,17 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
 
         # *load game
+        self.load_assets()
         self.setup()
 
+
+    def load_assets(self):
+        # * graphics
+        self.player_frames = import_folder('images', 'player')
+        self.bullet_surf = import_image('images', 'gun', 'bullet')
+        self.fire_surf = import_image('images', 'gun', 'fire')
+        self.bee_frames = import_folder('images', 'enemies', 'bee')
+        self.worm_frames = import_folder('images', 'enemies', 'worm')
 
     
     def setup(self):
@@ -29,7 +39,7 @@ class Game:
         
         for obj in tmx_map.get_layer_by_name('Entities'):
             if obj.name == 'Player':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.player_frames)
 
 
     def run(self):

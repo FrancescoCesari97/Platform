@@ -7,10 +7,17 @@ class Sprite(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_frect(topleft = pos)
 
-class Player(Sprite):
-    def __init__(self, pos, groups, collision_sprites):
-        surf = pygame.Surface((40, 20))
-        super().__init__(pos, surf, groups)
+class AnimatedSprite(Sprite):
+    def __init__(self, frames, pos, groups):
+        self.frames, self.frame_index, self.aniamtion_speed = frames, 0, 10
+        super().__init__(pos, self.frames[self.frame_index], groups)
+    
+
+
+class Player(AnimatedSprite):
+    def __init__(self, pos, groups, collision_sprites, frames):
+        super().__init__(frames, pos, groups)
+        self.flip = False
 
         # * movement & collision 
         self.direction = pygame.Vector2()
@@ -51,7 +58,19 @@ class Player(Sprite):
                     if self.direction.y < 0: self.rect.top = sprite.rect.bottom
 
                     self.direction.y = 0
-                    
+    def animate(self, dt):
+        if self.direction.x:
+            self.frame_index += self.aniamtion_speed * dt
+            self.flip = self.direction.x < 0
+        else:
+            self.frame_index = 0
+
+        if not self.on_floor:
+            self.frame_index = 1
+            
+        self.image = self.frames[int(self.frame_index) % len(self.frames)]
+        self.image = pygame.transform.flip(self.image, self.flip, False)
+
     
     def check_floor(self):
         bottom_rect = pygame.FRect((0,0), (self.rect.width, 2)).move_to(midtop = self.rect.midbottom)
@@ -62,3 +81,4 @@ class Player(Sprite):
         self.check_floor()
         self.input()
         self.move(dt)
+        self.animate(dt)
