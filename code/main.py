@@ -3,6 +3,7 @@ from sprites import *
 from groups import AllSprites
 from support import *
 from timer import Timer
+from random import randint
 
 class Game:
     def __init__(self):
@@ -21,11 +22,11 @@ class Game:
         self.setup()
 
         # * timers
-        self.bee_timer = Timer(2000, func = self.create_bee)
-        self.bee_timer.activate()
+        self.bee_timer = Timer(2000, func = self.create_bee, autostart = True, repeat = True)
+       
 
     def create_bee(self):
-        Bee(self.bee_frames, (500, 600), self.all_sprites)
+        Bee(self.bee_frames, ((randint(300, 600)),(randint(300, 400))), self.all_sprites)
 
 
     def load_assets(self):
