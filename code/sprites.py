@@ -56,14 +56,18 @@ class AnimatedSprite(Sprite):
         self.image = self.frames[int(self.frame_index) % len(self.frames)]
 
 
-class Bee(AnimatedSprite): 
+class Enemy(AnimatedSprite):
+    def __init__(self, frames, pos, groups):
+        super().__init__(frames, pos, groups)
+
+class Bee(Enemy): 
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
     
     def update(self, dt):
         self.animate(dt)
 
-class Worm(AnimatedSprite): 
+class Worm(Enemy): 
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
     
