@@ -16,6 +16,7 @@ class Game:
         # * groups 
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
+        self.bullet_sprites = pygame.sprite.Group()
 
         # *load game
         self.load_assets()
@@ -27,6 +28,9 @@ class Game:
 
     def create_bee(self):
         Bee(self.bee_frames, ((randint(300, 600)),(randint(300, 400))), self.all_sprites)
+
+    def create_bullet(self, pos, direction):
+        Bullet(self.bullet_surf, pos, direction, (self.all_sprites, self.bullet_sprites))
 
 
     def load_assets(self):
@@ -53,7 +57,7 @@ class Game:
         
         for obj in tmx_map.get_layer_by_name('Entities'):
             if obj.name == 'Player':
-                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.player_frames)
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites, self.player_frames, self.create_bullet)
         
 
 

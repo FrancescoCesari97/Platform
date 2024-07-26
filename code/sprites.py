@@ -9,6 +9,17 @@ class Sprite(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_frect(topleft = pos)
 
+class Bullet(Sprite):
+    def __init__(self, surf, pos, direction, groups):
+        super().__init__(pos, surf, groups)
+
+        # * movement
+        self.direction = direction
+        self.speed = 850
+
+    def update(self, dt):
+        self.rect.x += self.direction * self.speed * dt
+
 class AnimatedSprite(Sprite):
     def __init__(self, frames, pos, groups):
         self.frames, self.frame_index, self.aniamtion_speed = frames, 0, 10
@@ -35,9 +46,10 @@ class Worm(AnimatedSprite):
         
 
 class Player(AnimatedSprite):
-    def __init__(self, pos, groups, collision_sprites, frames):
+    def __init__(self, pos, groups, collision_sprites, frames, create_bullet):
         super().__init__(frames, pos, groups)
         self.flip = False
+        self.create_bullet = create_bullet
 
         # * movement & collision 
         self.direction = pygame.Vector2()
@@ -58,7 +70,7 @@ class Player(AnimatedSprite):
             self.direction.y = -20
 
         if keys[pygame.K_l] and not self.shoot_timer:
-            print('shoot bullet')
+            self.create_bullet(self.rect.center, -1 if self.flip else 1)
             self.shoot_timer.activate()
 
     def move(self, dt):
