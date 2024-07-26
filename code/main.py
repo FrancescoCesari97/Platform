@@ -28,7 +28,7 @@ class Game:
 
     def create_bee(self):
         Bee(frames = self.bee_frames,
-             pos = ((self.level_width + WINDOW_WIDTH),(randint(300, 400))),
+             pos = ((self.level_width + WINDOW_WIDTH),(randint(0, self.level_height))),
              groups = self.all_sprites,
              speed = randint(300, 500))
 
@@ -54,6 +54,7 @@ class Game:
     def setup(self):
         tmx_map = load_pygame(join('data', 'maps', 'world.tmx'))
         self.level_width = tmx_map.width * TILE_SIZE
+        self.level_height = tmx_map.height * TILE_SIZE
 
         for x, y, image in tmx_map.get_layer_by_name('Main').tiles():
             Sprite((x * TILE_SIZE, y * TILE_SIZE), image, (self.all_sprites, self.collision_sprites))
