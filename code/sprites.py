@@ -1,4 +1,5 @@
 
+from typing import Any
 from timer import Timer
 from settings import *
 
@@ -59,20 +60,19 @@ class AnimatedSprite(Sprite):
 class Enemy(AnimatedSprite):
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
+    
+    def update(self, dt) -> None:
+        self.animate(dt)
 
 class Bee(Enemy): 
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
     
-    def update(self, dt):
-        self.animate(dt)
 
 class Worm(Enemy): 
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
     
-    def update(self, dt):
-        self.animate(dt)
         
 
 class Player(AnimatedSprite):
