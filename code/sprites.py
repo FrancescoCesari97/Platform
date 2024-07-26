@@ -13,6 +13,9 @@ class Bullet(Sprite):
     def __init__(self, surf, pos, direction, groups):
         super().__init__(pos, surf, groups)
 
+        # * adjustment
+        self.image = pygame.transform.flip(self.image, direction == -1, False)
+
         # * movement
         self.direction = direction
         self.speed = 850
