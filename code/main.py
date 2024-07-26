@@ -30,7 +30,8 @@ class Game:
         Bee(self.bee_frames, ((randint(300, 600)),(randint(300, 400))), self.all_sprites)
 
     def create_bullet(self, pos, direction):
-        Bullet(self.bullet_surf, pos, direction, (self.all_sprites, self.bullet_sprites))
+        x = pos[0] + direction + direction * 35 if direction == 1 else pos[0] + direction + direction * 35 - self.bullet_surf.get_width()
+        Bullet(self.bullet_surf, (x, pos[1]), direction, (self.all_sprites, self.bullet_sprites))
 
 
     def load_assets(self):
