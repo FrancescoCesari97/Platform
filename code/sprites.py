@@ -62,16 +62,24 @@ class Enemy(AnimatedSprite):
         super().__init__(frames, pos, groups)
     
     def update(self, dt) -> None:
+        self.move(dt)
         self.animate(dt)
 
 class Bee(Enemy): 
-    def __init__(self, frames, pos, groups):
+    def __init__(self, frames, pos, groups, speed):
         super().__init__(frames, pos, groups)
+        self.speed = speed
+    
+    def move(self, dt):
+        self.rect.x -= self.speed * dt
     
 
 class Worm(Enemy): 
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
+    
+    def move(self, dt):
+        pass
     
         
 

@@ -27,7 +27,10 @@ class Game:
        
 
     def create_bee(self):
-        Bee(self.bee_frames, ((randint(300, 600)),(randint(300, 400))), self.all_sprites)
+        Bee(frames = self.bee_frames,
+             pos = ((randint(300, 600)),(randint(300, 400))),
+              groups = self.all_sprites,
+              speed = randint(300, 500))
 
     def create_bullet(self, pos, direction):
         x = pos[0] + direction + direction * 35 if direction == 1 else pos[0] + direction + direction * 35 - self.bullet_surf.get_width()
