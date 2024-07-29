@@ -62,9 +62,10 @@ class Enemy(AnimatedSprite):
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
     
-    def update(self, dt) -> None:
+    def update(self, dt):
         self.move(dt)
         self.animate(dt)
+        self.constraint()
 
 class Bee(Enemy): 
     def __init__(self, frames, pos, groups, speed):
@@ -76,6 +77,10 @@ class Bee(Enemy):
     def move(self, dt):
         self.rect.x -= self.speed * dt
         self.rect.y += sin(pygame.time.get_ticks() / self.frequency) * self.amplitude * dt
+
+    def constraint(self):
+        if self.rect.right <= 0:
+            self.kill()
     
 
 class Worm(Enemy): 
@@ -85,6 +90,8 @@ class Worm(Enemy):
     def move(self, dt):
         pass
     
+    def constraint(self):
+        pass
         
 
 class Player(AnimatedSprite):
