@@ -62,6 +62,9 @@ class Enemy(AnimatedSprite):
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
     
+    def destroy(self):
+        self.kill()
+    
     def update(self, dt):
         self.move(dt)
         self.animate(dt)
