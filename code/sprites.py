@@ -2,7 +2,8 @@
 from typing import Any
 from timer import Timer
 from settings import *
-
+from math import sin 
+from random import randint
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
@@ -69,9 +70,12 @@ class Bee(Enemy):
     def __init__(self, frames, pos, groups, speed):
         super().__init__(frames, pos, groups)
         self.speed = speed
+        self.amplitude = randint(500, 600)
+        self.frequency = randint(300, 600)
     
     def move(self, dt):
         self.rect.x -= self.speed * dt
+        self.rect.y += sin(pygame.time.get_ticks() / self.frequency) * self.amplitude * dt
     
 
 class Worm(Enemy): 
@@ -159,3 +163,4 @@ class Player(AnimatedSprite):
         self.input()
         self.move(dt)
         self.animate(dt)
+       
